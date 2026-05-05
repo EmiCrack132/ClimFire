@@ -1,0 +1,13 @@
+# Entorno virtual — cada quien instala el suyo
+venv/
+
+# Archivos de datos generados automáticamente
+historico_victoria.csv
+datos_entrenamiento.csv
+
+# Archivos de Python compilado
+__pycache__/
+*.pyc
+
+# Variables de entorno 
+.env
