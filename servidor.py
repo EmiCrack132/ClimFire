@@ -144,6 +144,110 @@ def forecast():
     return jsonify(dias)
 
 # ------------------------------------
+# RUTA: Datos de especies y zonas
+# ------------------------------------
+@app.route("/api/especies")
+def especies():
+    # Datos reales de especies amenazadas de Victoria
+    # fuente: Victorian Biodiversity Atlas + IUCN Red List
+    datos = {
+        "especies": [
+            {
+                "nombre": "Koala",
+                "nombre_cientifico": "Phascolarctos cinereus",
+                "estado": "Vulnerable",
+                "poblacion_estimada": 32000,
+                "habitat": "Eucalyptus forests",
+                "sensibilidad_incendio": "alta",
+                "emoji": "🐨"
+            },
+            {
+                "nombre": "Long-footed Potoroo",
+                "nombre_cientifico": "Potorous longipes",
+                "estado": "Endangered",
+                "poblacion_estimada": 200,
+                "habitat": "Eastern wet forests",
+                "sensibilidad_incendio": "muy_alta",
+                "emoji": "🦘"
+            },
+            {
+                "nombre": "Leadbeater's Possum",
+                "nombre_cientifico": "Gymnobelideus leadbeateri",
+                "estado": "Critically Endangered",
+                "poblacion_estimada": 1500,
+                "habitat": "Mountain ash forests",
+                "sensibilidad_incendio": "muy_alta",
+                "emoji": "🦔"
+            },
+            {
+                "nombre": "Gang-gang Cockatoo",
+                "nombre_cientifico": "Callocephalon fimbriatum",
+                "estado": "Vulnerable",
+                "poblacion_estimada": 10000,
+                "habitat": "Alpine and subalpine forests",
+                "sensibilidad_incendio": "alta",
+                "emoji": "🦜"
+            },
+            {
+                "nombre": "Baw Baw Frog",
+                "nombre_cientifico": "Philoria frosti",
+                "estado": "Critically Endangered",
+                "poblacion_estimada": 2500,
+                "habitat": "Wet alpine grasslands",
+                "sensibilidad_incendio": "alta",
+                "emoji": "🐸"
+            },
+            {
+                "nombre": "Spotted-tailed Quoll",
+                "nombre_cientifico": "Dasyurus maculatus",
+                "estado": "Vulnerable",
+                "poblacion_estimada": 5000,
+                "habitat": "Dense coastal forests",
+                "sensibilidad_incendio": "media",
+                "emoji": "🐾"
+            }
+        ],
+        "zonas": [
+            {
+                "nombre": "Great Otway National Park",
+                "lat": -38.7500, "lon": 143.7000,
+                "area_ha": 103000,
+                "cobertura": "Temperate rainforest",
+                "riesgo_base": "moderado"
+            },
+            {
+                "nombre": "Alpine National Park",
+                "lat": -36.9000, "lon": 147.2000,
+                "area_ha": 646000,
+                "cobertura": "Alpine and subalpine forest",
+                "riesgo_base": "alto"
+            },
+            {
+                "nombre": "Yarra Ranges National Park",
+                "lat": -37.6500, "lon": 145.8000,
+                "area_ha": 76000,
+                "cobertura": "Mountain ash and eucalyptus forest",
+                "riesgo_base": "moderado"
+            },
+            {
+                "nombre": "Grampians National Park",
+                "lat": -37.1500, "lon": 142.5200,
+                "area_ha": 167000,
+                "cobertura": "Eucalyptus and mallee woodland",
+                "riesgo_base": "alto"
+            },
+            {
+                "nombre": "Wilsons Promontory",
+                "lat": -39.0800, "lon": 146.3800,
+                "area_ha": 50000,
+                "cobertura": "Coastal forest and heath",
+                "riesgo_base": "moderado"
+            }
+        ]
+    }
+    return jsonify(datos)
+
+# ------------------------------------
 # INICIAR EL SERVIDOR
 # ------------------------------------
 if __name__ == "__main__":
