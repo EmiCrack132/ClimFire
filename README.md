@@ -12,9 +12,7 @@
 
 ## 🌐 Live Demo
 
-**[climfire.onrender.com](https://climfire.onrender.com)**
-*(replace with your actual Render URL)*
-
+**[ClimFire — Victoria Wildfire Risk System](https://climfire.onrender.com/)**
 ---
 
 ## 🔥 What is ClimFire?
