@@ -123,8 +123,8 @@ def forecast():
     predicciones = modelo.predict(X)
 
     # 5. Convertir números a texto legible
-    nombres = {0: "BAJO", 1: "MODERADO", 2: "ALTO"}
-    colores = {0: "#22c55e", 1: "#f97316", 2: "#ef4444"}
+    nombres = {0: "LOW", 1: "MODERATE", 2: "HIGH"}
+    colores = {0: "#22c55e", 1: "#ff6a00", 2: "#ff2a00"}
 
     # 6. Armar la respuesta como lista de diccionarios
     dias = []
@@ -213,35 +213,35 @@ def especies():
                 "lat": -38.7500, "lon": 143.7000,
                 "area_ha": 103000,
                 "cobertura": "Temperate rainforest",
-                "riesgo_base": "moderado"
+                "riesgo_base": "moderate"
             },
             {
                 "nombre": "Alpine National Park",
                 "lat": -36.9000, "lon": 147.2000,
                 "area_ha": 646000,
                 "cobertura": "Alpine and subalpine forest",
-                "riesgo_base": "alto"
+                "riesgo_base": "high"
             },
             {
                 "nombre": "Yarra Ranges National Park",
                 "lat": -37.6500, "lon": 145.8000,
                 "area_ha": 76000,
                 "cobertura": "Mountain ash and eucalyptus forest",
-                "riesgo_base": "moderado"
+                "riesgo_base": "moderate"
             },
             {
                 "nombre": "Grampians National Park",
                 "lat": -37.1500, "lon": 142.5200,
                 "area_ha": 167000,
                 "cobertura": "Eucalyptus and mallee woodland",
-                "riesgo_base": "alto"
+                "riesgo_base": "high"
             },
             {
                 "nombre": "Wilsons Promontory",
                 "lat": -39.0800, "lon": 146.3800,
                 "area_ha": 50000,
                 "cobertura": "Coastal forest and heath",
-                "riesgo_base": "moderado"
+                "riesgo_base": "moderate"
             }
         ]
     }

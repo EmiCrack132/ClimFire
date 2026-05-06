@@ -252,10 +252,10 @@
     }
 
     .card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
-    .card.riesgo-alto     { border-color: rgba(255,42,0,0.35); box-shadow: 0 0 20px rgba(255,42,0,0.08); }
-    .card.riesgo-alto::before     { background: var(--fire-red); }
-    .card.riesgo-moderado::before { background: var(--fire-orange); }
-    .card.riesgo-bajo::before     { background: var(--green); }
+    .card.risk-high     { border-color: rgba(255,42,0,0.35); box-shadow: 0 0 20px rgba(255,42,0,0.08); }
+    .card.risk-high::before     { background: var(--fire-red); }
+    .card.risk-moderate::before { background: var(--fire-orange); }
+    .card.risk-low::before      { background: var(--green); }
 
     .card .fecha {
       font-size: 0.7rem;
@@ -584,6 +584,50 @@
       opacity: 0.88;
       transform: translateY(-1px);
     }
+    .map-legend {
+      margin-top: 0.8rem;
+      background: var(--smoke-light);
+      border: 1px solid var(--ash);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+    }
+
+    .legend-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      color: var(--fire-amber);
+      margin-bottom: 0.3rem;
+    }
+
+    .legend-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
+      line-height: 1.5;
+    }
+
+    .legend-items {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      color: var(--text-bright);
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
   </style>
 </head>
 <body>
@@ -651,6 +695,15 @@
     <div class="section" id="map-section">
       <div class="section-title">🗺 Protected Areas Risk Map</div>
       <div id="map"></div>
+      <div class="map-legend">
+        <div class="legend-title">Base Risk Index</div>
+        <div class="legend-desc">Reflects historical fire vulnerability of each protected zone, independent of today's weather conditions.</div>
+        <div class="legend-items">
+          <div class="legend-item"><span class="legend-dot" style="background:#ff2a00"></span> High — structurally prone to severe fire</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#ff6a00"></span> Moderate — vulnerable during dry seasons</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#22c55e"></span> Low — naturally humid, lower risk</div>
+        </div>
+      </div>
     </div>
 
     <div class="section" id="species-section">
@@ -667,9 +720,9 @@
           <div class="calc-group">
             <label>Risk Level</label>
             <select id="calc-riesgo">
-              <option value="BAJO">Low</option>
-              <option value="MODERADO">Moderate</option>
-              <option value="ALTO">High</option>
+              <option value="LOW">Low</option>
+              <option value="MODERATE">Moderate</option>
+              <option value="HIGH">High</option>
             </select>
           </div>
           <div class="calc-group">
@@ -695,11 +748,11 @@
   </div>
 
   <script>
-    const COLOR   = { BAJO: '#22c55e', MODERADO: '#ff6a00', ALTO: '#ff2a00' }
-    const NIVELES = { BAJO: 0, MODERADO: 1, ALTO: 2 }
-    const BAR_PCT = { BAJO: 18, MODERADO: 58, ALTO: 94 }
+    const COLOR   = { LOW: '#22c55e', MODERATE: '#ff6a00', HIGH: '#ff2a00' }
+    const NIVELES = { LOW: 0, MODERATE: 1, HIGH: 2 }
+    const BAR_PCT = { LOW: 18, MODERATE: 58, HIGH: 94 }
 
-    let globalRiesgoMax = 'BAJO'
+    let globalRiesgoMax = 'LOW'
     let globalEspecies  = []
     let globalZonas     = []
 
@@ -739,9 +792,9 @@
       globalRiesgoMax = riesgoMax.riesgo
 
       const msgs = {
-        BAJO:     'No significant fire risk detected this week. Conditions are safe.',
-        MODERADO: 'Moderate fire conditions detected — stay alert and monitor updates.',
-        ALTO:     '⚠ HIGH fire risk detected — dangerous conditions for wildfires.'
+        LOW:     'No significant fire risk detected this week. Conditions are safe.',
+        MODERATE: 'Moderate fire conditions detected — stay alert and monitor updates.',
+        HIGH:     '⚠ HIGH fire risk detected — dangerous conditions for wildfires.'
       }
 
       const alerta = document.getElementById('alerta-general')
@@ -773,7 +826,7 @@
         const fechaTxt = fecha.toLocaleDateString('en-AU', { weekday:'short', day:'numeric', month:'short' })
         const color    = COLOR[dia.riesgo]
         const card     = document.createElement('div')
-        card.className = `card riesgo-${dia.riesgo.toLowerCase()}`
+        card.className = `card risk-${dia.riesgo.toLowerCase()}`
         card.innerHTML = `
           <span class="fecha">${fechaTxt}</span>
           <span class="riesgo-badge" style="background:${color}22;color:${color};border:1px solid ${color}44">${dia.riesgo}</span>
@@ -833,19 +886,19 @@
     function renderSpecies(especies) {
       const alertaCfg = {
         muy_alta: {
-          BAJO:     { color: '#22c55e', msg: 'Currently safe — low fire conditions.' },
-          MODERADO: { color: '#ff6a00', msg: 'Elevated risk — population may be disturbed.' },
-          ALTO:     { color: '#ff2a00', msg: '⚠ Critical threat — immediate habitat danger.' }
+          LOW:     { color: '#22c55e', msg: 'Currently safe — low fire conditions.' },
+          MODERATE: { color: '#ff6a00', msg: 'Elevated risk — population may be disturbed.' },
+          HIGH:     { color: '#ff2a00', msg: '⚠ Critical threat — immediate habitat danger.' }
         },
         alta: {
-          BAJO:     { color: '#22c55e', msg: 'Currently safe — monitoring recommended.' },
-          MODERADO: { color: '#ff6a00', msg: 'Caution — fire conditions affect habitat.' },
-          ALTO:     { color: '#ff2a00', msg: '⚠ High threat — significant population risk.' }
+          LOW:     { color: '#22c55e', msg: 'Currently safe — monitoring recommended.' },
+          MODERATE: { color: '#ff6a00', msg: 'Caution — fire conditions affect habitat.' },
+          HIGH:     { color: '#ff2a00', msg: '⚠ High threat — significant population risk.' }
         },
         media: {
-          BAJO:     { color: '#22c55e', msg: 'Currently safe.' },
-          MODERADO: { color: '#ffb300', msg: 'Minor risk — some habitat disruption possible.' },
-          ALTO:     { color: '#ff6a00', msg: 'Moderate threat — monitor population.' }
+          LOW:     { color: '#22c55e', msg: 'Currently safe.' },
+          MODERATE: { color: '#ffb300', msg: 'Minor risk — some habitat disruption possible.' },
+          HIGH:     { color: '#ff6a00', msg: 'Moderate threat — monitor population.' }
         }
       }
 
@@ -894,11 +947,11 @@
       const areaHa = parseInt(document.getElementById('calc-zona').value) || 100000
       const color  = COLOR[riesgo]
 
-      const spreadRate  = { BAJO: 0.002, MODERADO: 0.012, ALTO: 0.045 }
+      const spreadRate  = { LOW: 0.002, MODERATE: 0.012, HIGH: 0.045 }
       const impactoPct  = {
-        muy_alta: { BAJO: 2,   MODERADO: 18, ALTO: 55 },
-        alta:     { BAJO: 1,   MODERADO: 10, ALTO: 35 },
-        media:    { BAJO: 0.5, MODERADO: 5,  ALTO: 15 }
+        muy_alta: { LOW: 2,   MODERATE: 18, HIGH: 55 },
+        alta:     { LOW: 1,   MODERATE: 10, HIGH: 35 },
+        media:    { LOW: 0.5, MODERATE: 5,  HIGH: 15 }
       }
 
       const hectareas = Math.round(areaHa * spreadRate[riesgo] * dias)
@@ -928,7 +981,7 @@
           ${globalEspecies.map(sp => {
             const pct = impactoPct[sp.sensibilidad_incendio][riesgo]
             const afectados = Math.round(sp.poblacion_estimada * pct / 100)
-            const c = pct > 30 ? COLOR.ALTO : pct > 10 ? COLOR.MODERADO : COLOR.BAJO
+            const c = pct > 30 ? COLOR.HIGH : pct > 10 ? COLOR.MODERATE : COLOR.LOW
             return `
               <div class="species-impact-row">
                 <span class="impact-name">${sp.emoji} ${sp.nombre}</span>
